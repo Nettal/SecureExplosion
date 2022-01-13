@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "secureexplosion",
+  "version": "1.0.0",
+
+  "name": "SecureExplosion",
+  "description": "Prevent some explosions from damaging blocks.",
+  "authors": [
+    "Nettal"
+  ],
+  "contact": {
+    "homepage": "https://github.com/nettal",
+    "sources": "https://github.com/nettal/SecureExplosion"
+  },
+
+  "license": "MIT",
+  "icon": "assets/secureexplosion/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "nettal.secureexplosion.SecureExplosion"
+    ]
+  },
+  "mixins": [
+    "secureexplosion.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.12.12",
+    "fabric": "*",
+    "minecraft": "1.18.x"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
