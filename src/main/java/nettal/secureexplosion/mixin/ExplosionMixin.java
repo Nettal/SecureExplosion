@@ -33,7 +33,7 @@ public abstract class ExplosionMixin {
     @Inject(method = "collectBlocksAndDamageEntities",
             at = @At("HEAD"))
     private void before_collectBlocksAndDamageEntities(CallbackInfo ci) {
-        if (getCausingEntity() != null && destructionType != Explosion.DestructionType.NONE) {
+        if (getCausingEntity() != null && destructionType != Explosion.DestructionType.KEEP) {
             behavior = new ExplosionBehavior() {
                 @Override
                 public boolean canDestroyBlock(Explosion explosion, BlockView world, BlockPos pos, BlockState state, float power) {
