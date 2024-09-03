@@ -2,28 +2,31 @@ package nettal.secureexplosion;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Explosion;
-import net.minecraftforge.event.level.ExplosionEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.neoforged.neoforge.event.level.ExplosionEvent;
+import org.slf4j.Logger;
+
+import com.mojang.logging.LogUtils;
+
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.NeoForge;
+
 
 @Mod(SecureExplosion.MODID)
-@Mod.EventBusSubscriber()
 public class SecureExplosion {
     public static final String MODID = "secureexplosion";
-    public static Logger LOGGER = LogManager.getLogger();
+    public static Logger LOGGER = LogUtils.getLogger();
 
-    public SecureExplosion() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
+    public SecureExplosion(IEventBus modEventBus, ModContainer modContainer) {
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
+        NeoForge.EVENT_BUS.register(SecureExplosion.class);
     }
 
     @SubscribeEvent
-    public static void onExplosionStart(ExplosionEvent event) {
-        if (!(event instanceof ExplosionEvent.Detonate))
-            return;
+    public static void onExplosionStart(ExplosionEvent.Detonate event) {
         Explosion explosion = event.getExplosion();
         Entity exploder = explosion.getDirectSourceEntity();
         if (Config.PrintExploderInfo.get()) {
