@@ -30,8 +30,8 @@ public class SecureExplosion {
             if (exploder == null) {
                 LOGGER.info("[SecureExplosion]:Can not get Exploder,Exploder is null");
             } else {
-                LOGGER.info(String.format("[SecureExplosion]:Exploder:[%s] CanonicalName:[%s] DirectSourceEntity:[%s]",
-                        exploder, exploder.getClass().getCanonicalName(), explosion.getDirectSourceEntity()));
+                LOGGER.info(String.format("[SecureExplosion]:Exploder:[%s] CanonicalName:[%s]",
+                        exploder, exploder.getClass().getCanonicalName()));
             }
         }
         if (exploder != null && Config.EnableWhiteList.get()
