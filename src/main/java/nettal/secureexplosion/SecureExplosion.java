@@ -25,7 +25,7 @@ public class SecureExplosion {
         if (!(event instanceof ExplosionEvent.Detonate))
             return;
         Explosion explosion = event.getExplosion();
-        Entity exploder = explosion.getExploder();
+        Entity exploder = explosion.getDirectSourceEntity();
         if (Config.PrintExploderInfo.get()) {
             if (exploder == null) {
                 LOGGER.info("[SecureExplosion]:Can not get Exploder,Exploder is null");
