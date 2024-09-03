@@ -30,16 +30,17 @@ public class SecureExplosion {
             if (exploder == null) {
                 LOGGER.info("[SecureExplosion]:Can not get Exploder,Exploder is null");
             } else {
-                LOGGER.info(String.format("[SecureExplosion]:ExploderInfo:%s;CanonicalName:%s%n",exploder , exploder.getClass().getCanonicalName()));
+                LOGGER.info(String.format("[SecureExplosion]:Exploder:[%s] CanonicalName:[%s] DirectSourceEntity:[%s]",
+                        exploder, exploder.getClass().getCanonicalName(), explosion.getDirectSourceEntity()));
             }
         }
-        if(exploder != null && Config.EnableWhiteList.get()
-                && Config.WhiteList.get().contains(exploder.getClass().getCanonicalName())){
+        if (exploder != null && Config.EnableWhiteList.get()
+                && Config.WhiteList.get().contains(exploder.getClass().getCanonicalName())) {
             return;
         }
         if (Config.InterceptALL.get() ||
                 (Config.InterceptExploder.get() && exploder != null) ||
-                (Config.InterceptSourceMob.get() && explosion.getSourceMob() != null)) {
+                (Config.InterceptDirectSourceEntity.get() && explosion.getDirectSourceEntity() != null)) {
             event.getExplosion().clearToBlow();
         }
     }
