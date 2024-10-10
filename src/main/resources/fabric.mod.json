@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "secureexplosion",
-  "version": "1.0.0",
+  "version": "1.0.1",
 
   "name": "SecureExplosion",
   "description": "Prevent some explosions from damaging blocks.",
