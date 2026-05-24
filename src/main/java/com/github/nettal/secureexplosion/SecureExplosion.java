@@ -37,6 +37,12 @@ public class SecureExplosion {
         modContainer.registerConfig(ModConfig.Type.SERVER, Config.SPEC);
     }
 
+    private void info(boolean log, String format, Object... arguments) {
+        if (log) {
+            LOGGER.info(format, arguments);
+        }
+    }
+
     @SubscribeEvent
     public void onExplosionDetonate(ExplosionEvent.Detonate event) {
         if (!Config.ENABLE_MOD.get()) return;
@@ -46,17 +52,15 @@ public class SecureExplosion {
         boolean log = Config.LOG_ENABLED.get();
 
         // 记录爆炸源信息（仅当日志启用）
-        if (log) {
-            if (exploder == null) {
-                LOGGER.info("Explosion detected - no direct source entity. explosion class: {}",
-                        explosion.getClass().getCanonicalName());
-            } else {
-                LOGGER.info("Explosion detected - explosion class: {}, exploder: {}, class: {}, descriptionId: {}",
-                        explosion.getClass().getCanonicalName(),
-                        exploder,
-                        exploder.getClass().getCanonicalName(),
-                        exploder.getType().getDescriptionId());
-            }
+        if (exploder == null) {
+            info(log, "Explosion detected - no direct source entity. explosion class: {}",
+                    explosion.getClass().getCanonicalName());
+        } else {
+            info(log, "Explosion detected - explosion class: {}, exploder: {}, class: {}, descriptionId: {}",
+                    explosion.getClass().getCanonicalName(),
+                    exploder,
+                    exploder.getClass().getCanonicalName(),
+                    exploder.getType().getDescriptionId());
         }
 
         boolean shouldClearEntities = false;
@@ -65,8 +69,8 @@ public class SecureExplosion {
         if (exploder == null) {
             shouldClearEntities = Config.CLEAR_ENTITIES_WHEN_EXPLODER_NULL.get();
             shouldClearBlocks = Config.CLEAR_BLOCKS_WHEN_EXPLODER_NULL.get();
-            if (log && (shouldClearEntities || shouldClearBlocks)) {
-                LOGGER.info("Exploder is null -> clear entities: {}, clear blocks: {}",
+            if (shouldClearEntities || shouldClearBlocks) {
+                info(log, "Exploder is null -> clear entities: {}, clear blocks: {}",
                         shouldClearEntities, shouldClearBlocks);
             }
         } else {
@@ -74,31 +78,29 @@ public class SecureExplosion {
             String className = exploder.getClass().getCanonicalName();
 
             // 判断实体清除
-            if (isMatching(descriptionId, Config.CLEAR_ENTITIES_BY_DESCRIPTOR_ID.get(),
-                    Config.EXEMPT_ENTITIES_BY_DESCRIPTOR_ID.get()) ||
-                isMatching(className, Config.CLEAR_ENTITIES_BY_CLASS_NAME.get(),
-                        Config.EXEMPT_ENTITIES_BY_CLASS_NAME.get())) {
-                shouldClearEntities = true;
-                if (log) {
-                    LOGGER.info("Entity clearing triggered for exploder {} (desc={}, class={})",
-                            exploder, descriptionId, className);
-                }
+            if (matchesAny(descriptionId, Config.CLEAR_ENTITIES_BY_DESCRIPTOR_ID.get()) ||
+                matchesAny(className, Config.CLEAR_ENTITIES_BY_CLASS_NAME.get())) {
+                shouldClearEntities =
+                        !matchesAny(descriptionId, Config.EXEMPT_ENTITIES_BY_DESCRIPTOR_ID.get()) &&
+                        !matchesAny(className, Config.EXEMPT_ENTITIES_BY_CLASS_NAME.get());
             }
-
             // 判断方块清除
-            if (isMatching(descriptionId, Config.CLEAR_BLOCKS_BY_DESCRIPTOR_ID.get(),
-                    Config.EXEMPT_BLOCKS_BY_DESCRIPTOR_ID.get()) ||
-                isMatching(className, Config.CLEAR_BLOCKS_BY_CLASS_NAME.get(),
-                        Config.EXEMPT_BLOCKS_BY_CLASS_NAME.get())) {
-                shouldClearBlocks = true;
-                if (log) {
-                    LOGGER.info("Block clearing triggered for exploder {} (desc={}, class={})",
-                            exploder, descriptionId, className);
-                }
+            if (matchesAny(descriptionId, Config.CLEAR_BLOCKS_BY_DESCRIPTOR_ID.get()) ||
+                matchesAny(className, Config.CLEAR_BLOCKS_BY_CLASS_NAME.get())) {
+                shouldClearBlocks =
+                        !matchesAny(descriptionId, Config.EXEMPT_BLOCKS_BY_DESCRIPTOR_ID.get()) &&
+                        !matchesAny(className, Config.EXEMPT_BLOCKS_BY_CLASS_NAME.get());
             }
-
-            if (log && !shouldClearEntities && !shouldClearBlocks) {
-                LOGGER.info("No clearing rule matched for exploder {} -> no action", exploder);
+            if (shouldClearEntities) {
+                info(log, "Entity clearing triggered for exploder {} (desc={}, class={})",
+                        exploder, descriptionId, className);
+            }
+            if (shouldClearBlocks) {
+                info(log, "Block clearing triggered for exploder {} (desc={}, class={})",
+                        exploder, descriptionId, className);
+            }
+            if (!shouldClearEntities && !shouldClearBlocks) {
+                info(log, "No clearing rule matched for exploder {} -> no action", exploder);
             }
         }
 
@@ -107,7 +109,7 @@ public class SecureExplosion {
             try {
                 int blockCount = event.getAffectedBlocks().size();
                 event.getAffectedBlocks().clear();
-                if (log) LOGGER.info("Cleared {} affected blocks", blockCount);
+                info(log, "Cleared {} affected blocks", blockCount);
             } catch (Exception e) {
                 LOGGER.error("Failed to clear affected blocks", e);
             }
@@ -116,7 +118,7 @@ public class SecureExplosion {
             try {
                 int entityCount = event.getAffectedEntities().size();
                 event.getAffectedEntities().clear();
-                if (log) LOGGER.info("Cleared {} affected entities", entityCount);
+                info(log, "Cleared {} affected entities", entityCount);
             } catch (Exception e) {
                 LOGGER.error("Failed to clear affected entities", e);
             }
@@ -133,11 +135,5 @@ public class SecureExplosion {
             if (pattern.matcher(input).matches()) return true;
         }
         return false;
-    }
-
-    private boolean isMatching(String input, List<? extends String> blacklist, List<? extends String> whitelist) {
-        // 白名单优先
-        if (matchesAny(input, whitelist)) return false;
-        return matchesAny(input, blacklist);
     }
 }
