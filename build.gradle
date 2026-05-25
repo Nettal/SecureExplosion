@@ -34,12 +34,17 @@ base {
     archivesName = mod_id
 }
 
-// Mojang ships Java 25 to end users in 26.1.2, so mods should target Java 25.
-java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+// Mojang ships Java 21 to end users in 1.21.3, so mods should target Java 21.
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 neoForge {
     // Specify the version of NeoForge to use.
     version = project.neo_version
+
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
 
     // This line is optional. Access Transformers are automatically detected
     // accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
@@ -69,7 +74,7 @@ neoForge {
         }
 
         data {
-            clientData()
+            data()
 
             // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
             // gameDirectory = project.file('run-data')
@@ -143,6 +148,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
             neo_version            : neo_version,
+            loader_version_range   : loader_version_range,
             mod_id                 : mod_id,
             mod_name               : mod_name,
             mod_license            : mod_license,
