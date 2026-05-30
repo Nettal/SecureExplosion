@@ -1,6 +1,6 @@
 package com.github.nettal.secureexplosion;
 
-import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;
+import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeConfigRegistry;
 import net.fabricmc.api.ModInitializer;
 
 import net.neoforged.fml.config.ModConfig;
@@ -17,7 +17,7 @@ public class SecureExplosion implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        ConfigRegistry.INSTANCE.register(MOD_ID, ModConfig.Type.SERVER, Config.SPEC);
-		LOGGER.info("Hello Secure Explosion world!");
+        NeoForgeConfigRegistry.INSTANCE.register(MOD_ID, ModConfig.Type.SERVER, Config.SPEC);
+        LOGGER.info("Hello Secure Explosion world!");
     }
 }

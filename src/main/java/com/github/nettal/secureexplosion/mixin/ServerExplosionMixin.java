@@ -6,7 +6,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ServerExplosion;
-import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,11 +30,10 @@ public abstract class ServerExplosionMixin {
     }
 
     @Shadow
-    @Nullable
     public abstract Entity getDirectSourceEntity();
 
     private Protections computeProtections() {
-        if (!Config.ENABLE_MOD.get()) new Protections(false, false);
+        if (!Config.ENABLE_MOD.get()) return new Protections(false, false);
 
         Entity exploder = getDirectSourceEntity();
         boolean log = Config.LOG_ENABLED.get();

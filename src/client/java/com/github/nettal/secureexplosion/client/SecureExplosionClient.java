@@ -1,6 +1,6 @@
 package com.github.nettal.secureexplosion.client;
 
-import fuzs.forgeconfigapiport.fabric.api.v5.client.ConfigScreenFactoryRegistry;
+import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.client.ConfigScreenFactoryRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 
