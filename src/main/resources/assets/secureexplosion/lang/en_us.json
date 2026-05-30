@@ -1,0 +1,18 @@
+{
+  "secureexplosion.configuration.title": "SecureExplosion Configs",
+  "secureexplosion.configuration.section.secureexplosion.common.toml": "SecureExplosion Configs",
+  "secureexplosion.configuration.section.secureexplosion.common.toml.title": "SecureExplosion Configs",
+
+  "secureexplosion.configuration.enableSecureExplosions": "Enable Secure Explosions",
+  "secureexplosion.configuration.enableLogging": "Enable Detailed Logging",
+
+  "secureexplosion.configuration.clearEntities": "Clear Affected Entities",
+  "secureexplosion.configuration.clearEntities.tooltip": "Whether to clear entities affected by the explosion.",
+  "secureexplosion.configuration.clearBlocks": "Clear Affected Blocks",
+  "secureexplosion.configuration.clearBlocks.tooltip": "Whether to clear blocks affected by the explosion.",
+  "secureexplosion.configuration.whenExploderNull": "When Exploder is Null",
+  "secureexplosion.configuration.entityDescriptionId": "When Entity Description ID",
+  "secureexplosion.configuration.entityClassName": "When Entity Class Name",
+  "secureexplosion.configuration.blacklist": "in Blacklist",
+  "secureexplosion.configuration.whitelist": "in Whitelist"
+}

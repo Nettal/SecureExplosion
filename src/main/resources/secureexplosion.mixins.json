@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "com.github.nettal.secureexplosion.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"mixins": [
+		"ServerExplosionMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
