@@ -35,7 +35,7 @@ public abstract class ServerExplosionMixin {
     public abstract Entity getDirectSourceEntity();
 
     private Protections computeProtections() {
-        if (!Config.ENABLE_MOD.get()) new Protections(false, false);
+        if (!Config.ENABLE_MOD.get()) return new Protections(false, false);
 
         Entity exploder = getDirectSourceEntity();
         boolean log = Config.LOG_ENABLED.get();
